@@ -1,0 +1,5 @@
+node_modules/
+uploads/
+*.itmz
+!sample-data/example-map.itmz
+mapdata_extracted.xml
