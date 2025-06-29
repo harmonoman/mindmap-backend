@@ -1,6 +1,7 @@
 const AdmZip = require('adm-zip');
 const fs = require('fs');
 const path = require('path');
+const { XMLParser } = require('fast-xml-parser');
 
 // Replace this with your actual .itmz path
 const itmzFilePath = './sample-data/example-map.itmz';
@@ -15,9 +16,27 @@ if (!mapdataEntry) {
 
 const xmlContent = mapdataEntry.getData().toString('utf8');
 
-// Save to local file so you can open it in any text editor
-const outputPath = path.join(__dirname, 'mapdata_extracted.xml');
+// Save XML (optional)
+const xmlOutputPath = path.join(__dirname, 'mapdata_extracted.xml');
+fs.writeFileSync(xmlOutputPath, xmlContent);
+console.log(`mapdata.xml extracted and saved to ${xmlOutputPath}`);
 
-fs.writeFileSync(outputPath, xmlContent);
+// Parse to JSON
+const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_"
+});
 
-console.log(`mapdata.xml extracted and saved to ${outputPath}`);
+let json;
+
+try {
+    json = parser.parse(xmlContent);
+} catch (err) {
+    console.error('Error parsing XML:', err);
+    process.exit(1);
+}
+
+// Save JSON
+const jsonOutputPath = path.join(__dirname, 'mapdata_extracted.json');
+fs.writeFileSync(jsonOutputPath, JSON.stringify(json, null, 2));
+console.log(`✅ mapdata JSON saved to ${jsonOutputPath}`);

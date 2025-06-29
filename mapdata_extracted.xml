@@ -1,0 +1,18 @@
+<iThoughts version="4.0" app="com.toketaware.ithoughtsx.mas" app-version="9.3" modified="2025-06-26T09:57:31" author="Mark’s MacBook Pro (2) [markbond]" system-version="Version 13.2.1 (Build 22D68)"><topics>
+<topic uuid="B2A12D2E-41B0-4EB1-BCF9-C64312CF8949" position="{0, 0}" text="Core Node" created="2025-06-24T20:11:44" modified="2025-06-26T09:29:20">
+<topic uuid="7C3DDCA5-D764-4D2B-820C-E75085738C8F" position="{166, -130}" text="Parent " created="2025-06-24T20:11:51" modified="2025-06-26T09:29:36">
+<topic uuid="8CDC7A7E-261A-481C-A2EA-B8F885363E20" position="{145, 0}" text="Child" created="2025-06-24T20:12:03" modified="2025-06-26T09:36:32">
+</topic>
+</topic>
+<topic uuid="0E2F1E96-944B-4D96-8EC2-B6AC6EF415E1" position="{166, 25}" text="Parent" created="2025-06-24T20:11:58" modified="2025-06-26T09:29:48">
+<topic uuid="30316B03-41A4-4584-9338-76A1E298DA14" position="{176, -105}" text="Child with links" link="https://github.com/harmonoman" created="2025-06-24T20:12:09" modified="2025-06-26T09:36:30">
+</topic>
+<topic uuid="AFD0AECD-3E91-41AC-9053-5A4840A705C9" position="{186, 25}" text="Child with pictures" created="2025-06-24T20:12:32" modified="2025-06-26T09:30:29">
+<topic uuid="166881F7-20C8-4B36-91DF-83E7E536553B" position="{254, 0}" text-size="4" text-width="479.398438" image-width="279.398438" att-id="B4E1B655-CC63-4A3E-B925-277CFA962690" att-name="image.png" created="2025-06-24T20:13:17" modified="2025-06-24T20:13:19">
+</topic>
+</topic>
+</topic>
+</topic>
+</topics><relationships>
+</relationships>
+</iThoughts>
