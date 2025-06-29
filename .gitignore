@@ -9,7 +9,4 @@ uploads/
 !sample-data/example-map.itmz
 
 # Extracted files (generated artifacts)
-mapdata_extracted.json
-mapdata_extracted.xml
-style_extracted.json
-style_extracted.xml
+extracted-data/

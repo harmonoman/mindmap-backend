@@ -6,20 +6,26 @@ const { XMLParser } = require('fast-xml-parser');
 // Replace this with your actual .itmz path
 const itmzFilePath = './sample-data/example-map.itmz';
 
-const zip = new AdmZip(itmzFilePath);
-const styleEntry = zip.getEntry('style.xml');
+// Ensure the output folder exists
+const outputDir = path.join(__dirname, '../extracted-data');
+if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+}
 
-if (!styleEntry) {
-  console.error('style.xml not found in .itmz file');
+const zip = new AdmZip(itmzFilePath);
+const mapdataEntry = zip.getEntry('mapdata.xml');
+
+if (!mapdataEntry) {
+  console.error('mapdata.xml not found in .itmz file');
   process.exit(1);
 }
 
-const xmlContent = styleEntry.getData().toString('utf8');
+const xmlContent = mapdataEntry.getData().toString('utf8');
 
 // Save XML (optional)
-const xmlOutputPath = path.join(__dirname, 'style_extracted.xml');
+const xmlOutputPath = path.join(__dirname, '../extracted-data/mapdata_extracted.xml');
 fs.writeFileSync(xmlOutputPath, xmlContent);
-console.log(`style.xml extracted and saved to ${xmlOutputPath}`);
+console.log(`mapdata.xml extracted and saved to ${xmlOutputPath}`);
 
 // Parse to JSON
 const parser = new XMLParser({
@@ -37,6 +43,6 @@ try {
 }
 
 // Save JSON
-const jsonOutputPath = path.join(__dirname, 'style_extracted.json');
+const jsonOutputPath = path.join(__dirname, '../extracted-data/mapdata_extracted.json');
 fs.writeFileSync(jsonOutputPath, JSON.stringify(json, null, 2));
-console.log(`✅ style JSON saved to ${jsonOutputPath}`);
+console.log(`✅ mapdata JSON saved to ${jsonOutputPath}`);
