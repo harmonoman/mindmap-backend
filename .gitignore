@@ -1,5 +1,14 @@
+# Node dependencies
 node_modules/
+
+# Uploaded files (temp uploads from multer)
 uploads/
+
+# Ignore all .itmz files except the sample
 *.itmz
 !sample-data/example-map.itmz
+
+# Extracted files (generated artifacts)
 mapdata_extracted.xml
+style_extracted.json
+style_extracted.xml
