@@ -17,9 +17,9 @@ if (!styleEntry) {
 const xmlContent = styleEntry.getData().toString('utf8');
 
 // Save XML (optional)
-const outputPath = path.join(__dirname, 'style_extracted.xml');
-fs.writeFileSync(outputPath, xmlContent);
-console.log(`style.xml extracted and saved to ${outputPath}`);
+const xmlOutputPath = path.join(__dirname, 'style_extracted.xml');
+fs.writeFileSync(xmlOutputPath, xmlContent);
+console.log(`style.xml extracted and saved to ${xmlOutputPath}`);
 
 // Parse to JSON
 const parser = new XMLParser({
