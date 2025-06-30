@@ -85,6 +85,31 @@ app.get('/image/:id', (req, res) => {
   res.send(imageData);
 });
 
+// Get and serve the preview image of the map
+app.get('/preview/:mapId', (req, res) => {
+    const mapId = req.params.mapId.trim();
+    const itmzFile = `./sample-data/${mapId}.itmz`;
+  
+    console.log(`🔍 Attempting to open preview from ${itmzFile}`);
+  
+    try {
+      const zip = new AdmZip(itmzFile);
+      const previewEntry = zip.getEntry('preview.png');
+  
+      if (!previewEntry) {
+        console.log(`❌ preview.png not found in ${itmzFile}`);
+        return res.status(404).send('Preview not found');
+      }
+  
+      const previewData = previewEntry.getData();
+      res.set('Content-Type', 'image/png');
+      res.send(previewData);
+    } catch (err) {
+      console.error('Error reading preview:', err);
+      res.status(500).send('Error processing preview');
+    }
+  });
+
 // ✅ app.listen should always be LAST
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
