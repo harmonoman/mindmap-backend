@@ -1,49 +1,59 @@
 # mindmap-backend
 
-A Node.js backend to parse and serve data from **iThoughts (.itmz) mind map files**.  
-It extracts the map structure (XML to JSON) and serves embedded images directly from the `.itmz` archive.
+A Node.js backend for parsing and serving data from **iThoughts (.itmz)** mind map files.
+It extracts the full map structure (topics, styles, preferences, etc.), processes embedded assets, and provides a foundation for a future mind map renderer.
 
 ---
 
 ## 🚀 Features
 
-- 📄 Upload `.itmz` mind map files
-- 🔍 Parse and convert `mapdata.xml` to JSON
-- 🖼️ Serve embedded images (e.g., node attachments) via URL
-- ⚙️ Simple API endpoints for testing and development
+✅ **Full .itmz Extraction**  
+- Parse `mapdata.xml`, `style.xml`, `manifest.plist`, `preferences.plist`, `display_state.plist`, and assets into a structured JSON object.
+
+✅ **Embedded Assets Support**  
+- Serve images and attachments directly from the `.itmz` archive via API.
+
+✅ **CLI Tools & Utilities**  
+- Run extraction directly from terminal using `parse-map.js`.
+
+✅ **Robust Testing**  
+- Unit tests (Jest) for all extractors and the full pipeline.
 
 ---
 
 ## 📦 Tech Stack
 
-- Node.js + Express
-- `adm-zip` for ZIP file handling
-- `fast-xml-parser` for XML to JSON conversion
-- `multer` for handling file uploads
+- **Node.js** + **Express** (API backend)
+- [`adm-zip`](https://www.npmjs.com/package/adm-zip) (ZIP archive handling)
+- [`fast-xml-parser`](https://www.npmjs.com/package/fast-xml-parser) (XML → JSON)
+- [`jest`](https://jestjs.io/) (unit testing)
+- [`multer`](https://www.npmjs.com/package/multer) (file uploads)
 - CORS enabled
 
 ---
 
 ## 🔧 Installation
 
-1. **Clone the repo:**
-
+1. **Clone the repo**
 ```
-git clone https://github.com/your-username/mindmap-backend.git
-cd mindmap-backend
+   git clone https://github.com/harmonoman/mindmap-backend.git
+   cd mindmap-backend
 ```
 2. **Install dependencies:**
 
 ```
 npm install
 ```
-3. **Start the server:**
+3. **Run tests (optional but recommended)**
 
+```
+npm test
+```
+4. **Start the server:**
 ```
 node server.js
 ```
 **Server runs at:**
-
 ```
 http://localhost:4000
 
@@ -55,8 +65,6 @@ http://localhost:4000
 |--------|-----------------------------|------------------------------------|
 | GET    | `/`                         | Health check — confirms running   |
 | GET    | `/hello`                    | Returns `Hello World!`            |
-| GET    | `/test`                     | Simple test for GET                |
-| POST   | `/test`                     | Simple test for POST               |
 | POST   | `/upload`                   | Upload a `.itmz` file, returns parsed JSON |
 | GET    | `/image/:id`                | Fetches image from `.itmz` based on image ID UUID |
 
@@ -65,7 +73,7 @@ POST `/upload`
 
 - Form-data key: `file`
 - Upload a `.itmz` file
-- Response: Parsed `mapdata.xml` as JSON
+- Response: Full map as JSON
 
 🖼️ **Fetch an image from the `.itmz`**
 GET `/image/:id`
@@ -75,57 +83,58 @@ GET `/image/:id`
 http://localhost:4000/image/B4E1B655-CC63-4A3E-B925-277CFA962690
 
 ```
-- Fetches image from:
-```
-assets/{id}/image.png
-```
-inside the `.itmz` file.
-
 - Response: PNG image
 
-## 🛠️ Local Extraction Utility
+---
 
-This repo includes a helper script to extract the `mapdata.xml` file directly from an `.itmz` file.
-
-### 🔧 Run it like this:
-
+## 🛠️ CLI Tools
+Parse a .itmz file to JSON
 ```
-node extract-mapdata.js
+node cli/parse-map.js ./sample-data/example-map.itmz
 ```
+Outputs full map JSON to extracted-data/full_map.json
 
-📜 What it does:
-- Opens MyMap.itmz (make sure the file is in the project folder).
-
-- Extracts mapdata.xml.
-
-- Saves it as mapdata_extracted.xml in the current directory.
-
-⚠️ Note:
-Make sure your .itmz file is named MyMap.itmz and is located in the root of the project directory (or adjust the filename in the script).
+---
 
 ## 📁 Folder Structure
 ```
 mindmap-backend/
-├── uploads/             # Temporary file uploads (handled by multer)
-├── node_modules/        # Dependencies
-├── server.js            # 🖥️ Main server file (API backend)
-├── package.json         # Project metadata & dependencies
-├── README.md            # Project documentation
-├── MyMap.itmz           # Example .itmz file (optional, for testing)
-├── list-itmz.js         # 🔍 Utility — lists files inside a .itmz
-├── extract-mapdata.js   # 📤 Utility — extracts mapdata.xml to local file
-````
+├── cli/                 # CLI tools (e.g., parse-map.js)
+├── extract-scripts/     # Legacy standalone scripts for manual extraction
+├── extracted-data/      # Output JSON (gitignored)
+├── lib/                 # Core reusable extraction modules
+├── sample-data/         # Example .itmz files for testing
+├── scripts/             # Helper scripts (e.g., create fixtures)
+├── tests/               # Jest unit tests + fixtures
+├── tools/               # Utility tools (e.g., list-itmz.js)
+├── server.js            # Express server
+└── package.json
+```
+
+---
+
+## 🧪 Running Tests
+This project uses Jest for unit tests:
+```
+npm test
+```
+Tests cover:
+- Each extractor (mapdata, style, etc.)
+- The full pipeline (extractAll)
+- Corrupt/malformed .itmz handling
+- Large file stress tests
+
+---
 
 ## 🚧 TODO / Roadmap
-- Parse and visualize relationships between topics
+ ✅ Build extraction pipeline
+ ✅ Add CLI + API support
+ ✅ Unit test extractors
+ [] Build React frontend for rendering
+ [] Support editing and saving maps
+ [] Deploy API backend
 
--  Build a React-based frontend (`mindmap-frontend`)
-
-- Add authentication (optional)
-
-- Support saving edits back to `.itmz` or JSON
-
-- Deploy (Render, Railway, Fly.io, etc.)
+---
 
 ## 🤝 Contributing
 If you'd like to collaborate, fork the repo, make changes, and submit a PR!
