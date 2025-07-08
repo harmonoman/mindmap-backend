@@ -5,9 +5,11 @@ const cors = require('cors');
 const multer = require('multer');
 const AdmZip = require('adm-zip');
 const { XMLParser } = require('fast-xml-parser');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
-const port = 4000;
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -109,6 +111,38 @@ app.get('/preview/:mapId', (req, res) => {
       res.status(500).send('Error processing preview');
     }
   });
+
+// Serve dynamically parsed mindmap from example-map.itmz
+app.get('/full_map.json', (req, res) => {
+  const itmzFile = path.join(__dirname, 'sample-data', 'example-map.itmz');
+  console.log('itmzFile:', itmzFile);
+
+  try {
+    const zip = new AdmZip(itmzFile);
+    const mapdataEntry = zip.getEntry('mapdata.xml');
+
+    if (!mapdataEntry) {
+      console.log('❌ mapdata.xml not found in .itmz file');
+      return res.status(404).send('mapdata.xml not found');
+    }
+
+    const xml = mapdataEntry.getData().toString('utf8');
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: "@_"
+    });
+    const json = parser.parse(xml);
+    console.log('Parsed JSON:', JSON.stringify(json, null, 2));
+
+    res.json(json);
+
+    console.log('✅ Served fresh full_map.json from .itmz');
+
+  } catch (err) {
+    console.error('❌ Error parsing .itmz:', err);
+    res.status(500).send('Error processing .itmz file');
+  }
+});
 
 // ✅ app.listen should always be LAST
 app.listen(port, () => {
